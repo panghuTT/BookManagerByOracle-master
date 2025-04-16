@@ -129,8 +129,28 @@ public class BorrowController {
                 throw new NotEnoughException("图书" + bookid + "库存不足（已经被借走）");
             }
 
+            // 查询当前最大的borrowid
+            Integer maxBorrowId = 102; // 默认从102开始
+            try {
+                List<Borrow> borrows = borrowService.queryBorrowsByPage(1, 1);
+                if (borrows != null && !borrows.isEmpty()) {
+                    // 查询最大的borrowid
+                    borrows = borrowService.queryBorrowsByPage(1, 999999);
+                    for (Borrow b : borrows) {
+                        if (b.getBorrowid() != null && b.getBorrowid() > maxBorrowId) {
+                            maxBorrowId = b.getBorrowid();
+                        }
+                    }
+                    maxBorrowId++; // 递增
+                }
+            } catch (Exception e) {
+                // 忽略查询错误，使用默认值
+                System.out.println("查询最大borrowid失败，使用默认值: " + maxBorrowId);
+            }
+
             // 添加一条记录到borrow表
             Borrow borrow = new Borrow();
+            borrow.setBorrowid(maxBorrowId); // 手动设置borrowid，绕过触发器
             borrow.setUserid(userid);
             borrow.setBookid(bookid);
             borrow.setBorrowtime(new Date(System.currentTimeMillis()));

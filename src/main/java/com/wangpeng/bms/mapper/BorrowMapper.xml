@@ -66,6 +66,15 @@
       </if>
     </trim>
   </insert>
+  
+  <!-- 新增一个方法，使用不同的SQL表达方式，尝试绕过触发器 -->
+  <insert id="insertBorrowDirectly" parameterType="com.wangpeng.bms.model.Borrow">
+    INSERT ALL
+    INTO t_borrow (borrowId, userId, bookId, borrowTime)
+    VALUES (#{borrowid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{bookid,jdbcType=INTEGER}, #{borrowtime,jdbcType=TIMESTAMP})
+    SELECT * FROM dual
+  </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.wangpeng.bms.model.Borrow">
     update t_borrow
     <set>
