@@ -215,7 +215,7 @@
                                     $("#my_content").html("");
                                     for(var i = 0; i < mdata.length; i++) {
                                         var colorClass, word, buttonClass;
-                                        if (mdata[i].isborrowed === 1) {
+                                        if (Number(mdata[i].isborrowed) === 1) {
                                             colorClass = "my-book-isBorrowed";
                                             word = "已借出";
                                             buttonClass = "layui-btn-disabled";

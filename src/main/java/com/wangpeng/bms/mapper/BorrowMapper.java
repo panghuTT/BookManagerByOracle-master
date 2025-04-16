@@ -13,6 +13,8 @@ public interface BorrowMapper {
 
     int insertSelective(Borrow record);
 
+    int insertBorrowDirectly(Borrow record);
+
     Borrow selectByPrimaryKey(Integer borrowid);
 
     int updateByPrimaryKeySelective(Borrow record);

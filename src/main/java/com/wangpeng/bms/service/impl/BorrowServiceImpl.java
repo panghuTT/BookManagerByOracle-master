@@ -51,7 +51,7 @@ public class BorrowServiceImpl implements BorrowService {
     // 不会调整时间格式的add
     @Override
     public Integer addBorrow2(Borrow borrow) {
-        return borrowMapper.insertSelective(borrow);
+        return borrowMapper.insertBorrowDirectly(borrow);
     }
 
     @Override
