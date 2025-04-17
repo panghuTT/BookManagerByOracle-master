@@ -10,83 +10,174 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="./layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        html, body {
-            height: 100%;
-            width: 100%;
+        * {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
         }
         body {
-            background-image: url("layuimini/images/bg.jpg");
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background: url('layuimini/images/backgound.jpg') no-repeat center center fixed;
             background-size: cover;
-            position: relative;
-        }
-        #container {
-            height: 100%;
-            width: 100%;
-            position: relative;
-        }
-        input:-webkit-autofill {-webkit-box-shadow:inset 0 0 0 1000px #fff;background-color:transparent;}
-        .admin-login-background {
-            width: 300px;
-            height: 300px;
-            position: absolute;
-            left: 50%;
-            top: 40%;
-            margin-left: -150px;
-            margin-top: -100px;
-            background-color: rgba(0, 0, 0, 0.5);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            border-radius: 10px;
+            position: relative;
         }
-        .admin-header {text-align:center;margin-bottom:20px;color:#ffffff;font-weight:bold;font-size:28px}
-        i {position:absolute;}
-        .layui-input {
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            position: relative;
+            z-index: 1;
+        }
+        .login-form {
+            flex: 1;
+            padding: 50px;
+        }
+        .login-image {
+            flex: 1;
+            background: url('layuimini/images/bg.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .login-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .admin-header h1 {
+            font-size: 32px;
+            font-weight: 700;
             margin-bottom: 10px;
+        }
+        .admin-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        .layui-form-item {
+            margin-bottom: 25px;
+        }
+        .layui-input {
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding-left: 15px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .layui-input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+        .layui-form-select {
+            width: 100%;
+        }
+        .layui-form-select .layui-input {
+            height: 50px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .layui-btn {
+            flex: 1;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 8px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            border: none;
+            transition: all 0.3s;
+        }
+        .layui-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            color: #fff;
+            font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+            }
+            .login-image {
+                display: none;
+            }
+            .login-form {
+                padding: 30px;
+            }
         }
     </style>
 </head>
 <body>
-<div id="container">
-    <div class="admin-login-background">
-        <div class="admin-header">
-            <span>欢迎使用图书管理系统</span>
+    <div class="login-container">
+        <div class="login-form">
+            <div class="admin-header">
+                <h1>图书管理系统</h1>
+                <p>欢迎登录系统</p>
+            </div>
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" value="admin">
+                </div>
+                <div class="layui-form-item">
+                    <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" value="admin">
+                </div>
+                <div class="layui-form-item">
+                    <select name="authority" id="authority">
+                        <option value="manager">管理员</option>
+                        <option value="reader" selected="selected">读者</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button class="layui-btn" lay-submit="" lay-filter="login">确认登录</button>
+                    <button class="layui-btn" id="btn_register" type="button">注册账号</button>
+                </div>
+            </form>
         </div>
-        <form class="layui-form" action="">
-            <!--用户名-->
-            <div>
-                <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" value="admin">
-            </div>
-            <!--密码-->
-            <div>
-                <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" value="admin">
-            </div>
-            <!--权限-->
-            <div>
-                <select name="authority" id="authority">
-                    <option value="manager">管理员</option>
-                    <option value="reader" selected="selected">读者</option>
-                </select>
-            </div>
-            <div align="center" style="margin-top: 15px">
-                <!--登录按钮-->
-                <button class="layui-btn" lay-submit="" lay-filter="login">确认登录</button>
-                <!--注册按钮-->
-                <button class="layui-btn" id="btn_register" type="button">注册账号</button>
-            </div>
-
-        </form>
+        <div class="login-image"></div>
     </div>
-</div>
+    <div class="copyright">
+        <p>© 2024 图书管理系统. All rights reserved</p>
+    </div>
 <script src="./layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
