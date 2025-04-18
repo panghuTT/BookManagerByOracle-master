@@ -28,28 +28,8 @@ public class BookInfoServiceImpl implements BookInfoService {
 
     @Override
     public Integer addBookInfo(BookInfo bookInfo) {
-        // 查询当前最大的bookid
-        Integer maxBookId = 1; // 默认从1开始
-        try {
-            List<BookInfo> books = bookInfoMapper.selectAll();
-            if (books != null && !books.isEmpty()) {
-                for (BookInfo b : books) {
-                    if (b.getBookid() != null && b.getBookid() > maxBookId) {
-                        maxBookId = b.getBookid();
-                    }
-                }
-                maxBookId++; // 递增
-            }
-        } catch (Exception e) {
-            // 忽略查询错误，使用默认值
-            System.out.println("查询最大bookid失败，使用默认值: " + maxBookId);
-        }
-        
-        // 手动设置ID，绕过触发器
-        bookInfo.setBookid(maxBookId);
-        
-        // 使用新方法绕过触发器
-        return bookInfoMapper.insertBookInfoDirectly(bookInfo);
+        // 使用数据库触发器自动生成ID
+        return bookInfoMapper.insertSelective(bookInfo);
     }
 
     @Override

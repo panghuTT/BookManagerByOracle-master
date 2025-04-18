@@ -72,6 +72,7 @@
     select * from(
       select rownum rn, <include refid="Base_Column_List" />
       from t_book_type
+      ORDER BY bookTypeId ASC
     )
     where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
   </select>
@@ -81,6 +82,7 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
     from t_book_type
+    ORDER BY bookTypeId ASC
   </select>
   <select id="selectCountBySearch" resultType="int">
     select count(*) from t_book_type
@@ -99,6 +101,7 @@
           and bookTypeName like concat(concat('%',#{booktypename}),'%')
         </if>
       </where>
+      ORDER BY bookTypeId ASC
     )
     where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
   </select>

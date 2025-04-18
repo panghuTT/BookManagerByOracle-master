@@ -13,8 +13,6 @@ public interface BookInfoMapper {
 
     int insertSelective(BookInfo record);
 
-    int insertBookInfoDirectly(BookInfo record);
-
     BookInfo selectByPrimaryKey(Integer bookid);
 
     int updateByPrimaryKeySelective(BookInfo record);
