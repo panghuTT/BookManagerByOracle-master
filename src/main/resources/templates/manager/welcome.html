@@ -94,11 +94,11 @@
 
             // 加载统计数据
             function loadStatistics() {
-                $.get('/api/dashboard/statistics', function(data) {
+                $.get('/BookManager/api/dashboard/statistics', function(data) {
                     console.log('Statistics data:', data);
-                    $('#totalBooks').text(data.total_books);
-                    $('#borrowedBooks').text(data.borrowed_books);
-                    $('#availableBooks').text(data.available_books);
+                    $('#totalBooks').text(data.TOTAL_BOOKS);
+                    $('#borrowedBooks').text(data.BORROWED_BOOKS);
+                    $('#availableBooks').text(data.AVAILABLE_BOOKS);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     console.error('Error loading statistics:', textStatus, errorThrown);
                 });
@@ -106,7 +106,7 @@
 
             // 加载分类统计
             function loadCategoryStats() {
-                $.get('/api/dashboard/category-stats', function(data) {
+                $.get('/BookManager/api/dashboard/category-stats', function(data) {
                     console.log('Category stats data:', data);
                     var option = {
                         title: {
@@ -121,7 +121,7 @@
                             orient: 'vertical',
                             left: 'left',
                             data: data.map(function(item) {
-                                return item.category;
+                                return item.CATEGORY;
                             })
                         },
                         series: [{
@@ -130,8 +130,8 @@
                             radius: '50%',
                             data: data.map(function(item) {
                                 return {
-                                    value: item.count,
-                                    name: item.category
+                                    value: item.COUNT,
+                                    name: item.CATEGORY
                                 };
                             }),
                             emphasis: {
@@ -151,55 +151,132 @@
 
             // 加载借阅趋势
             function loadBorrowTrend() {
-                $.get('/api/dashboard/borrow-trend', function(data) {
-                    console.log('Borrow trend data:', data);
-                    var option = {
-                        title: {
-                            text: '近7天借阅趋势',
-                            left: 'center'
-                        },
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        xAxis: {
-                            type: 'category',
-                            data: data.map(function(item) {
-                                return item.date;
-                            })
-                        },
-                        yAxis: {
-                            type: 'value',
-                            name: '借阅次数'
-                        },
-                        series: [{
-                            name: '借阅次数',
-                            data: data.map(function(item) {
-                                return item.borrow_count;
-                            }),
+                console.log('开始加载借阅与归还趋势数据...');
+                
+                // 设置一个默认的空图表，避免空白
+                var defaultOption = {
+                    title: {
+                        text: '近7天借阅与归还趋势',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['借阅数量', '归还数量'],
+                        bottom: 10
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '数量'
+                    },
+                    series: [
+                        {
+                            name: '借阅数量',
+                            data: [0, 0, 0, 0, 0, 0, 0],
                             type: 'line',
                             smooth: true,
                             itemStyle: {
                                 color: '#1aa094'
                             }
-                        }]
-                    };
-                    borrowTrendChart.setOption(option);
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error loading borrow trend:', textStatus, errorThrown);
+                        },
+                        {
+                            name: '归还数量',
+                            data: [0, 0, 0, 0, 0, 0, 0],
+                            type: 'line',
+                            smooth: true,
+                            itemStyle: {
+                                color: '#FF5722'
+                            }
+                        }
+                    ]
+                };
+                
+                // 先显示默认空图表
+                borrowTrendChart.setOption(defaultOption);
+                
+                // 尝试加载真实数据
+                $.ajax({
+                    url: '/BookManager/api/dashboard/borrow-return-trend',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('成功获取借阅与归还趋势数据:', data);
+                        if (data && data.length > 0) {
+                            var option = {
+                                title: {
+                                    text: '近7天借阅与归还趋势',
+                                    left: 'center'
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: ['借阅数量', '归还数量'],
+                                    bottom: 10
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    data: data.map(function(item) {
+                                        return item.DATE;
+                                    })
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    name: '数量'
+                                },
+                                series: [
+                                    {
+                                        name: '借阅数量',
+                                        data: data.map(function(item) {
+                                            return item.BORROW_COUNT;
+                                        }),
+                                        type: 'line',
+                                        smooth: true,
+                                        itemStyle: {
+                                            color: '#1aa094'
+                                        }
+                                    },
+                                    {
+                                        name: '归还数量',
+                                        data: data.map(function(item) {
+                                            return item.RETURN_COUNT;
+                                        }),
+                                        type: 'line',
+                                        smooth: true,
+                                        itemStyle: {
+                                            color: '#FF5722'
+                                        }
+                                    }
+                                ]
+                            };
+                            borrowTrendChart.setOption(option);
+                        } else {
+                            console.warn('API返回了空数据');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('加载借阅与归还趋势失败:', textStatus, errorThrown);
+                        // 错误发生时，保持默认图表
+                    }
                 });
             }
 
             // 加载热门图书
             function loadHotBooks() {
-                $.get('/api/dashboard/hot-books', function(data) {
+                $.get('/BookManager/api/dashboard/hot-books', function(data) {
                     console.log('Hot books data:', data);
                     var html = '';
                     data.forEach(function(book, index) {
                         html += '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
-                            '<td>' + book.title + '</td>' +
-                            '<td>' + book.author + '</td>' +
-                            '<td>' + book.borrow_count + '</td>' +
+                            '<td>' + book.TITLE + '</td>' +
+                            '<td>' + book.AUTHOR + '</td>' +
+                            '<td>' + book.BORROW_COUNT + '</td>' +
                             '</tr>';
                     });
                     $('#hotBooksList').html(html);

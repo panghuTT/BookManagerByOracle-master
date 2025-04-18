@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <!--GAV坐标-->
-    <groupId>com.wangpeng.oes</groupId>
+    <groupId>com.wangrui.bms</groupId>
     <artifactId>BookManagementSystemByOracle</artifactId>
     <version>1.0.0</version>
 
@@ -65,6 +65,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.wangrui.bms.BookManagerByOracleApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
