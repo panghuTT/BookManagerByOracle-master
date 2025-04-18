@@ -6,7 +6,7 @@
   "logoInfo": {
     "title": "图书管理系统",
     "image": "../layuimini/images/jlu-logo.png",
-    "href": "index.html"
+    "href": "manager_index.html"
   },
   "menuInfo": [
     {
