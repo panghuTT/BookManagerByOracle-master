@@ -5,8 +5,8 @@
   },
   "logoInfo": {
     "title": "图书管理系统",
-    "image": "../layuimini/images/xiaohui.png",
-    "href": "index.html"
+    "image": "../layuimini/images/jlu-logo.png",
+    "href": "manager_index.html"
   },
   "menuInfo": [
     {
