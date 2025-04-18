@@ -52,7 +52,6 @@
             </div>
         </div>
 
-        <!-- 图表区域 -->
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md6">
                 <div class="chart-container" id="categoryChart"></div>
@@ -85,8 +84,11 @@
     </div>
 
     <script>
-        layui.use(['jquery'], function(){
-            var $ = layui.jquery;
+        layui.use(['jquery', 'form', 'layer', 'carousel'], function(){
+            var $ = layui.jquery,
+                form = layui.form,
+                layer = layui.layer,
+                carousel = layui.carousel;
             
             // 初始化图表
             var categoryChart = echarts.init(document.getElementById('categoryChart'));
