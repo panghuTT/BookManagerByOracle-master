@@ -131,6 +131,7 @@
       select rownum rn, bookId, bookName, bookAuthor,bookPrice, bookTypeId, bookDesc,isBorrowed, bookImg,
              (select bookTypeName from t_book_type where t_book_type.bookTypeId = t_book_info.bookTypeId) as bookTypeName
       from t_book_info
+      ORDER BY bookId ASC
     )
     where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
   </select>
@@ -167,6 +168,7 @@
           and bookTypeId = #{booktypeid}
         </if>
       </where>
+      ORDER BY bookId ASC
     )
     where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
   </select>
@@ -174,6 +176,7 @@
     select bookId, bookName, bookAuthor,bookPrice, bookTypeId, bookDesc,isBorrowed, bookImg,
            (select bookTypeName from t_book_type where t_book_type.bookTypeId = t_book_info.bookTypeId) as bookTypeName
     from t_book_info
+    ORDER BY bookId ASC
   </select>
   <select id="selectCountByType" resultType="int">
     select count(*) from t_book_info
@@ -193,23 +196,9 @@
           and bookTypeId = #{booktypeid}
         </if>
       </where>
+      ORDER BY bookId ASC
     )
     where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
   </select>
-  <insert id="insertBookInfoDirectly" parameterType="com.wangrui.bms.model.BookInfo">
-    INSERT ALL
-    INTO t_book_info (bookId, bookName, bookAuthor, bookPrice, bookTypeId, bookDesc, isBorrowed, bookImg)
-    VALUES (
-      #{bookid,jdbcType=INTEGER}, 
-      #{bookname,jdbcType=VARCHAR}, 
-      #{bookauthor,jdbcType=VARCHAR}, 
-      #{bookprice,jdbcType=DECIMAL}, 
-      #{booktypeid,jdbcType=INTEGER}, 
-      #{bookdesc,jdbcType=VARCHAR}, 
-      #{isborrowed,jdbcType=TINYINT}, 
-      #{bookimg,jdbcType=TINYINT}
-    )
-    SELECT * FROM dual
-  </insert>
 </mapper>
 
