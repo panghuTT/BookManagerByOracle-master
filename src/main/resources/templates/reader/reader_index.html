@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线借阅平台</title>
+
+    <style>
+        .my-big-title{
+            height: 60px; line-height: 60px; font-size: 24px; padding-left: 30px;
+        }
+        .my-nav{
+            float: right;
+        }
+        .my-main-body{
+            color: #898989; font-size: 16px; margin: 30px
+        }
+        .welcome-container {
+            padding: 20px;
+        }
+        .stat-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .stat-card h2 {
+            color: #333;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .chart-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            margin-bottom: 20px;
+            height: 400px;
+            width: 100%;
+        }
+        .quick-nav {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .quick-nav-item {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            transition: all 0.3s;
+            width: 22%;
+        }
+        .quick-nav-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,.2);
+        }
+        .quick-nav-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #009688;
+        }
+        .quick-nav-title {
+            font-size: 16px;
+            color: #333;
+        }
+        /* 轮播图样式 */
+        .carousel-container {
+            margin: 20px 0;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+        }
+        .carousel-item {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* 公告栏样式 */
+        .notice-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            margin-bottom: 20px;
+        }
+        .notice-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .notice-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .notice-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+        .notice-item-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .notice-item-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .notice-item-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+
+    <!-- 导入layui css -->
+    <link rel="stylesheet" href="../layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
+    <!-- 导入echarts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <!-- 导入layui js -->
+    <script src="../layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row" style="background-color: #009688; color: white">
+        <div class="layui-col-md5 my-big-title">
+            <img src="http://localhost:8092/BookManager/pictures/logo.png" style="height: 45px">
+            图书管理系统—在线借阅平台
+        </div>
+        <div class="layui-col-md7">
+            <ul class="layui-nav layui-bg-green my-nav">
+                <li class="layui-nav-item layui-this">
+                    <a href="./reader_index.html">首页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="./reader_book_list.html">全部图书</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="./reader_book_classification.html">图书分类</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="./reader_borrow.html">我的借阅</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="my-about">关于</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><span id="my_name">未登录</span></a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="./reader_password.html">修改密码</a></dd>
+                        <dd><a href="javascript:;" id="login-out">退出登录</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 轮播图 -->
+    <div class="carousel-container">
+        <div class="layui-carousel" id="carousel">
+            <div carousel-item>
+                <div class="carousel-item">
+                    <img src="http://localhost:8092/BookManager/pictures/banner1.jpg" alt="banner1">
+                </div>
+                <div class="carousel-item">
+                    <img src="http://localhost:8092/BookManager/pictures/banner2.jpg" alt="banner2">
+                </div>
+                <div class="carousel-item">
+                    <img src="http://localhost:8092/BookManager/pictures/banner3.jpg" alt="banner3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="welcome-container">
+        <!-- 统计卡片 -->
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md3">
+                <div class="stat-card">
+                    <h3>总借阅量</h3>
+                    <h2 id="total-borrows">0</h2>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="stat-card">
+                    <h3>当前借阅</h3>
+                    <h2 id="current-borrows">0</h2>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="stat-card">
+                    <h3>已还图书</h3>
+                    <h2 id="returned-books">0</h2>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="stat-card">
+                    <h3>逾期次数</h3>
+                    <h2 id="overdue-times">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速导航 -->
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="stat-card">
+                    <div class="quick-nav">
+                        <a href="./reader_book_list.html" class="quick-nav-item">
+                            <div class="quick-nav-icon">📚</div>
+                            <div class="quick-nav-title">全部图书</div>
+                        </a>
+                        <a href="./reader_book_classification.html" class="quick-nav-item">
+                            <div class="quick-nav-icon">📖</div>
+                            <div class="quick-nav-title">图书分类</div>
+                        </a>
+                        <a href="./reader_borrow.html" class="quick-nav-item">
+                            <div class="quick-nav-icon">📝</div>
+                            <div class="quick-nav-title">我的借阅</div>
+                        </a>
+                        <a href="./reader_password.html" class="quick-nav-item">
+                            <div class="quick-nav-icon">🔒</div>
+                            <div class="quick-nav-title">修改密码</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="notice-container">
+                    <div class="notice-title">📢 系统公告</div>
+                    <ul class="notice-list" id="notice-list">
+                        <!-- 公告内容将通过JavaScript动态加载 -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近借阅记录 -->
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="stat-card">
+                    <h3>最近借阅记录</h3>
+                    <table class="layui-table" lay-filter="recentBorrows">
+                        <thead>
+                        <tr>
+                            <th>书名</th>
+                            <th>借阅时间</th>
+                            <th>应还时间</th>
+                            <th>状态</th>
+                        </tr>
+                        </thead>
+                        <tbody id="recent-borrows-list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['form', 'layer', 'carousel'], function(){
+        var form = layui.form,
+            layer = layui.layer,
+            carousel = layui.carousel,
+            $ = layui.$;
+
+        // 轮播图初始化
+        carousel.render({
+            elem: '#carousel',
+            width: '100%',
+            height: '300px',
+            arrow: 'always',
+            anim: 'fade',
+            interval: 3000
+        });
+
+        var objUserid;
+        $.ajax({
+            url: '../user/reader/getUser',
+            type: 'post',
+            datatype: 'json',
+            success: function (userObj) {
+                $("#my_name").text(userObj.username);
+                objUserid = userObj.userid;
+                loadStatistics(objUserid);
+                loadCharts(objUserid);
+                loadRecentBorrows(objUserid);
+            }
+        });
+
+        $('#login-out').on("click", function () {
+            $.ajax({
+                url: '../user/reader/exitLogin',
+                type: 'get',
+                success: function () {
+                    layer.msg('退出登录成功', {time:1000}, function () {
+                        window.location = '../index.html';
+                    });
+                }
+            });
+        });
+
+        $('#my-about').on("click", function () {
+            layer.open({
+                title: '关于信息',
+                content: '系统名称：图书管理系统<br>作者：王瑞 李章钥 刘湘湘<br>Baby我们的感情就像跳楼机',
+                end: function () {
+                    location.reload();
+                }
+            });
+        });
+
+        function loadStatistics(userid) {
+            $.ajax({
+                url: '../borrow/reader/getStatistics',
+                type: 'get',
+                data: {userid: userid},
+                success: function(res) {
+                    $('#total-borrows').text(res.totalBorrows || 0);
+                    $('#current-borrows').text(res.currentBorrows || 0);
+                    $('#returned-books').text(res.returnedBooks || 0);
+                    $('#overdue-times').text(res.overdueTimes || 0);
+                }
+            });
+        }
+
+        function loadCharts(userid) {
+            // 加载公告
+            $.ajax({
+                url: '../notice/reader/getNotices',
+                type: 'get',
+                success: function(res) {
+                    var html = '';
+                    res.forEach(function(notice) {
+                        html += '<li class="notice-item">' +
+                            '<div class="notice-item-title">' + notice.title + '</div>' +
+                            '<div class="notice-item-content">' + notice.content + '</div>' +
+                            '<div class="notice-item-time">发布时间：' + notice.createTime + '</div>' +
+                            '</li>';
+                    });
+                    $('#notice-list').html(html);
+                }
+            });
+        }
+
+        function loadRecentBorrows(userid) {
+            $.ajax({
+                url: '../borrow/reader/getRecentBorrows',
+                type: 'get',
+                data: {userid: userid},
+                success: function(res) {
+                    var html = '';
+                    res.forEach(function(item) {
+                        var status = item.status === '已还' ? 
+                            '<span class="layui-badge layui-bg-green">已还</span>' : 
+                            '<span class="layui-badge layui-bg-orange">借阅中</span>';
+                        html += '<tr>' +
+                            '<td>' + item.bookname + '</td>' +
+                            '<td>' + item.borrowtime + '</td>' +
+                            '<td>' + item.returntime + '</td>' +
+                            '<td>' + status + '</td>' +
+                            '</tr>';
+                    });
+                    $('#recent-borrows-list').html(html);
+                }
+            });
+        }
+
+        // 窗口大小改变时重绘图表
+        window.addEventListener('resize', function() {
+            echarts.init(document.getElementById('book-categories')).resize();
+        });
+    });
+</script>
+</body>
+</html> 
