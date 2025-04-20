@@ -33,9 +33,10 @@ public class UserController {
 
     @RequestMapping(value = "/register")
     @ResponseBody
-    public Integer register(String username, String password){
+    public Integer register(String username, String password, String authority){
         // res：0 用户名重复，1 注册成功
-        return userService.register(username, password);
+        byte isAdmin = (byte) (authority != null && authority.equals("manager") ? 1 : 0);
+        return userService.register(username, password, isAdmin);
     }
 
     @RequestMapping(value = {

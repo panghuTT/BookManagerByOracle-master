@@ -19,9 +19,10 @@ public interface UserService {
      * 注册
      * @param username
      * @param password
+     * @param isAdmin
      * @return
      */
-    Integer register(String username, String password);
+    Integer register(String username, String password, Byte isAdmin);
 
     /**
      * 设置密码

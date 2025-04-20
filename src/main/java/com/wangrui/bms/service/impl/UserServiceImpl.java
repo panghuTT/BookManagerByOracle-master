@@ -21,14 +21,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer register(String username, String password) {
+    public Integer register(String username, String password, Byte isAdmin) {
         User tmp = userMapper.selectByUsername(username);
         if(tmp != null) return 0;  //账号重复
 
         User user = new User();
         user.setUsername(username);
         user.setUserpassword(password);
-        user.setIsadmin((byte)0);
+        user.setIsadmin(isAdmin);
         return userMapper.insertSelective(user);
     }
 
