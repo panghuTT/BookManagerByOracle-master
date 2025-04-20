@@ -1,0 +1,15 @@
+/* 自定义分页选中颜色样式 */
+.layui-laypage .layui-laypage-curr .layui-laypage-em {
+    /* 使用!important覆盖原有样式 */
+    background-color: var(--layui-nav-bar-color, #444444) !important; 
+}
+
+/* 定义默认颜色变量，以防var()不生效 */
+:root {
+    --layui-nav-bar-color: #444444;
+} 
+
+/* 分页按钮点击时的文字颜色 */
+.layui-laypage .layui-laypage-curr em {
+    color: #fff !important;
+} 
