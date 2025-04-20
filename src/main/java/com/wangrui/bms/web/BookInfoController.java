@@ -28,6 +28,17 @@ public class BookInfoController {
         // 获取数据
         List<BookInfo> bookInfos = bookInfoService.queryBookInfosByPage(page, limit);
 
+        // 调试输出 - 打印ID顺序
+        System.out.println("==== 从数据库获取的图书ID顺序 ====");
+        if (bookInfos != null && !bookInfos.isEmpty()) {
+            for (int i = 0; i < bookInfos.size(); i++) {
+                System.out.println("第" + (i+1) + "条数据ID: " + bookInfos.get(i).getBookid());
+            }
+        } else {
+            System.out.println("未获取到数据或数据为空!");
+        }
+        System.out.println("==== 图书ID顺序输出结束 ====");
+
         // 结果map
         Map<String,Object> res = new HashMap<String,Object>();
         res.put("code", 0);
@@ -148,6 +159,23 @@ public class BookInfoController {
         res.put("count", count);
         res.put("data", bookInfos);
         return res;
+    }
+
+    @RequestMapping(value = "/checkAllBookIds")
+    @ResponseBody
+    public String checkAllBookIds(){
+        // 获取所有图书，不分页
+        List<BookInfo> allBooks = bookInfoService.queryBookInfos();
+        
+        StringBuilder result = new StringBuilder();
+        result.append("图书库中总共有 ").append(allBooks.size()).append(" 本书\n");
+        result.append("所有图书ID如下：\n");
+        
+        for(BookInfo book : allBooks) {
+            result.append("ID: ").append(book.getBookid()).append(", 书名: ").append(book.getBookname()).append("\n");
+        }
+        
+        return result.toString();
     }
 
 }

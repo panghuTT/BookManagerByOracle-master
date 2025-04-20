@@ -18,7 +18,10 @@ public class BookInfoServiceImpl implements BookInfoService {
 
     @Override
     public List<BookInfo> queryBookInfosByPage(Integer page, Integer size) {
-        return bookInfoMapper.selectAllByLimit((page - 1) * size, size);
+        System.out.println("执行分页查询: page=" + page + ", size=" + size + ", begin=" + ((page - 1) * size));
+        List<BookInfo> result = bookInfoMapper.selectAllByLimit((page - 1) * size, size);
+        System.out.println("查询结果条数: " + (result != null ? result.size() : 0));
+        return result;
     }
 
     @Override
