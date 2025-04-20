@@ -7,10 +7,10 @@
     <result column="bookAuthor" jdbcType="VARCHAR" property="bookauthor" />
     <result column="bookPrice" jdbcType="DECIMAL" property="bookprice" />
     <result column="bookTypeId" jdbcType="INTEGER" property="booktypeid" />
-    <result column="bookTypeName" jdbcType="INTEGER" property="booktypename" />
+    <result column="bookTypeName" jdbcType="VARCHAR" property="booktypename" />
     <result column="bookDesc" jdbcType="VARCHAR" property="bookdesc" />
-    <result column="isBorrowed" jdbcType="TINYINT" property="isborrowed" />
-    <result column="bookImg" jdbcType="TINYINT" property="bookimg" />
+    <result column="isBorrowed" jdbcType="DECIMAL" property="isborrowed" />
+    <result column="bookImg" jdbcType="VARCHAR" property="bookimg" />
   </resultMap>
   <sql id="Base_Column_List">
     bookId, bookName, bookAuthor, bookPrice, bookTypeId, bookDesc, isBorrowed, bookImg
@@ -31,7 +31,7 @@
       isBorrowed, bookImg)
     values (#{bookid,jdbcType=INTEGER}, #{bookname,jdbcType=VARCHAR}, #{bookauthor,jdbcType=VARCHAR}, 
       #{bookprice,jdbcType=DECIMAL}, #{booktypeid,jdbcType=INTEGER}, #{bookdesc,jdbcType=VARCHAR}, 
-      #{isborrowed,jdbcType=TINYINT}, #{bookimg,jdbcType=TINYINT})
+      #{isborrowed,jdbcType=DECIMAL}, #{bookimg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wangrui.bms.model.BookInfo">
     insert into t_book_info
@@ -81,10 +81,10 @@
         #{bookdesc,jdbcType=VARCHAR},
       </if>
       <if test="isborrowed != null">
-        #{isborrowed,jdbcType=TINYINT},
+        #{isborrowed,jdbcType=DECIMAL},
       </if>
       <if test="bookimg != null">
-        #{bookimg,jdbcType=TINYINT},
+        #{bookimg,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -107,10 +107,10 @@
         bookDesc = #{bookdesc,jdbcType=VARCHAR},
       </if>
       <if test="isborrowed != null">
-        isBorrowed = #{isborrowed,jdbcType=TINYINT},
+        isBorrowed = #{isborrowed,jdbcType=DECIMAL},
       </if>
       <if test="bookimg != null">
-        bookImg = #{bookimg,jdbcType=TINYINT},
+        bookImg = #{bookimg,jdbcType=VARCHAR},
       </if>
     </set>
     where bookId = #{bookid,jdbcType=INTEGER}
@@ -122,83 +122,106 @@
       bookPrice = #{bookprice,jdbcType=DECIMAL},
       bookTypeId = #{booktypeid,jdbcType=INTEGER},
       bookDesc = #{bookdesc,jdbcType=VARCHAR},
-      isBorrowed = #{isborrowed,jdbcType=TINYINT},
-      bookImg = #{bookimg,jdbcType=TINYINT}
+      isBorrowed = #{isborrowed,jdbcType=DECIMAL},
+      bookImg = #{bookimg,jdbcType=VARCHAR}
     where bookId = #{bookid,jdbcType=INTEGER}
   </update>
+  
+  <!-- 分页查询所有图书 -->
   <select id="selectAllByLimit" resultMap="BaseResultMap">
-    select * from (
-      select rownum rn, bookId, bookName, bookAuthor,bookPrice, bookTypeId, bookDesc,isBorrowed, bookImg,
-             (select bookTypeName from t_book_type where t_book_type.bookTypeId = t_book_info.bookTypeId) as bookTypeName
-      from t_book_info
-      ORDER BY bookId ASC
+    SELECT * FROM (
+      SELECT a.*, ROWNUM rn FROM (
+        SELECT bookId, bookName, bookAuthor, bookPrice, bookTypeId, bookDesc, isBorrowed, bookImg,
+               (SELECT bookTypeName FROM t_book_type WHERE t_book_type.bookTypeId = t_book_info.bookTypeId) AS bookTypeName
+        FROM t_book_info
+        ORDER BY bookId ASC
+      ) a 
+      WHERE ROWNUM &lt;= (#{begin} + #{size})
     )
-    where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
+    WHERE rn &gt; #{begin}
   </select>
+  
+  <!-- 查询总数 -->
   <select id="selectCount" resultType="int">
-    select count(*) from t_book_info
+    SELECT count(*) FROM t_book_info
   </select>
+  
+  <!-- 条件搜索统计 -->
   <select id="selectCountBySearch" resultType="int">
-    select count(*) from t_book_info
+    SELECT count(*) FROM t_book_info
     <where>
       <if test="bookname != null and bookname != '' ">
-        and bookName like concat(concat('%',#{bookname}),'%')
+        AND bookName LIKE concat(concat('%',#{bookname}),'%')
       </if>
       <if test="bookauthor != null and bookauthor != '' ">
-        and bookAuthor like concat(concat('%',#{bookauthor}),'%')
+        AND bookAuthor LIKE concat(concat('%',#{bookauthor}),'%')
       </if>
       <if test="booktypeid != null and booktypeid != '' ">
-        and bookTypeId = #{booktypeid}
+        AND bookTypeId = #{booktypeid}
       </if>
     </where>
   </select>
+  
+  <!-- 条件搜索分页 -->
   <select id="selectBySearch" resultMap="BaseResultMap">
-    select * from(
-      select rownum rn,bookId, bookName, bookAuthor,bookPrice, bookTypeId, bookDesc,isBorrowed, bookImg,
-      (select bookTypeName from t_book_type where t_book_type.bookTypeId = t_book_info.bookTypeId) as bookTypeName
-      from t_book_info
-      <where>
-        <if test="bookname != null and bookname != '' ">
-          and bookName like concat(concat('%',#{bookname}),'%')
-        </if>
-        <if test="bookauthor != null and bookauthor != '' ">
-          and bookAuthor like concat(concat('%',#{bookauthor}),'%')
-        </if>
-        <if test="booktypeid != null and booktypeid != '' ">
-          and bookTypeId = #{booktypeid}
-        </if>
-      </where>
-      ORDER BY bookId ASC
-    )
-    where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
+    SELECT * FROM (
+      SELECT a.*, ROWNUM rn FROM (
+        SELECT bookId, bookName, bookAuthor, bookPrice, bookTypeId, bookDesc, isBorrowed, bookImg,
+               (SELECT bookTypeName FROM t_book_type WHERE t_book_type.bookTypeId = t_book_info.bookTypeId) AS bookTypeName
+        FROM t_book_info
+        <where>
+          <if test="bookname != null and bookname != '' ">
+            AND bookName LIKE concat(concat('%',#{bookname}),'%')
+          </if>
+          <if test="bookauthor != null and bookauthor != '' ">
+            AND bookAuthor LIKE concat(concat('%',#{bookauthor}),'%')
+          </if>
+          <if test="booktypeid != null and booktypeid != '' ">
+            AND bookTypeId = #{booktypeid}
+          </if>
+        </where>
+        ORDER BY bookId ASC
+      ) a
+      WHERE ROWNUM &lt;= (#{begin} + #{size})
+    ) 
+    WHERE rn &gt; #{begin}
   </select>
+  
+  <!-- 查询所有图书 -->
   <select id="selectAll" resultMap="BaseResultMap">
-    select bookId, bookName, bookAuthor,bookPrice, bookTypeId, bookDesc,isBorrowed, bookImg,
-           (select bookTypeName from t_book_type where t_book_type.bookTypeId = t_book_info.bookTypeId) as bookTypeName
-    from t_book_info
+    SELECT bookId, bookName, bookAuthor, bookPrice, bookTypeId, bookDesc, isBorrowed, bookImg,
+           (SELECT bookTypeName FROM t_book_type WHERE t_book_type.bookTypeId = t_book_info.bookTypeId) AS bookTypeName
+    FROM t_book_info
     ORDER BY bookId ASC
   </select>
+  
+  <!-- 按类型统计 -->
   <select id="selectCountByType" resultType="int">
-    select count(*) from t_book_info
+    SELECT count(*) FROM t_book_info
     <where>
       <if test="booktypeid != null and booktypeid != '' ">
-        and bookTypeId = #{booktypeid}
+        AND bookTypeId = #{booktypeid}
       </if>
     </where>
   </select>
+  
+  <!-- 按类型分页 -->
   <select id="selectByType" resultMap="BaseResultMap">
-    select * from (
-      select rownum rn, bookId, bookName, bookAuthor,bookPrice, bookTypeId, bookDesc,isBorrowed, bookImg,
-      (select bookTypeName from t_book_type where t_book_type.bookTypeId = t_book_info.bookTypeId) as bookTypeName
-      from t_book_info
-      <where>
-        <if test="booktypeid != null and booktypeid != '' ">
-          and bookTypeId = #{booktypeid}
-        </if>
-      </where>
-      ORDER BY bookId ASC
+    SELECT * FROM (
+      SELECT a.*, ROWNUM rn FROM (
+        SELECT bookId, bookName, bookAuthor, bookPrice, bookTypeId, bookDesc, isBorrowed, bookImg,
+               (SELECT bookTypeName FROM t_book_type WHERE t_book_type.bookTypeId = t_book_info.bookTypeId) AS bookTypeName
+        FROM t_book_info
+        <where>
+          <if test="booktypeid != null and booktypeid != '' ">
+            AND bookTypeId = #{booktypeid}
+          </if>
+        </where>
+        ORDER BY bookId ASC
+      ) a
+      WHERE ROWNUM &lt;= (#{begin} + #{size})
     )
-    where rn - 1 between #{begin} and (#{begin} + #{size} - 1)
+    WHERE rn &gt; #{begin}
   </select>
 </mapper>
 

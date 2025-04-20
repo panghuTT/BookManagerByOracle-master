@@ -241,7 +241,24 @@
                 next: '下一页',
             },
             done: function (res) {
-                console.log(res);
+                console.log("原始返回数据:", res);
+                console.log("数据条数:", res.data.length);
+                console.log("按ID排序检查:");
+                for (var i = 0; i < res.data.length; i++) {
+                    console.log("第" + (i+1) + "条数据的ID:", res.data[i].bookid);
+                }
+                // 检查是否按ID排序
+                var isSorted = true;
+                for (var i = 1; i < res.data.length; i++) {
+                    if (res.data[i].bookid < res.data[i-1].bookid) {
+                        console.error("数据未按ID排序! 位置" + i + "的ID(" + res.data[i].bookid + ")小于位置" + (i-1) + "的ID(" + res.data[i-1].bookid + ")");
+                        isSorted = false;
+                        break;
+                    }
+                }
+                if (isSorted) {
+                    console.log("数据已按ID正确排序");
+                }
             },
             skin: 'line'
         });
