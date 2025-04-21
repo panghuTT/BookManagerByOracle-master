@@ -32,6 +32,75 @@
         .my-book-isNotBorrowed{
             color: green;
         }
+        /* 分类卡片样式 */
+        .category-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .category-card {
+            flex: 0 0 200px;
+            height: 180px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f9f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .category-icon i {
+            font-size: 24px;
+            color: #009688;
+        }
+        .category-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .category-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+        .category-count {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+        .category-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .category-link:hover {
+            text-decoration: none;
+        }
         /*单行文本的溢出显示省略号*/
         .pl{
             overflow:hidden;
@@ -96,13 +165,11 @@
     <div class="my-main-body">
 
         <fieldset class="layui-elem-field layui-field-title">
-            <legend>图书分类（点击对应分类查看书籍）</legend>
+            <legend>图书分类</legend>
         </fieldset>
 
-        <div class="layui-row" style="margin-bottom: 20px">
-            <span class="layui-breadcrumb" id="my_type">
-<!--                <a href="./reader_book_classification.html?booktypeid=1">计算机科学</a>-->
-            </span>
+        <div class="category-container" id="my_type">
+            <!-- 分类卡片将通过JavaScript动态添加 -->
         </div>
 
         <div class="layui-row" id="my_content">
@@ -174,8 +241,17 @@
                 console.log(mdata);
                 $("#my_type").html("");
                 for(var i = 0; i < mdata.length; i++) {
-                    $("#my_type").append("<a href=\"./reader_book_classification.html?booktypeid=" + mdata[i].booktypeid + "\">" + mdata[i].booktypename + "</a>")
-                    if(i !== mdata.length - 1)$("#my_type").append("<span> | </span>");
+                    var icon = getCategoryIcon(mdata[i].booktypename);
+                    var desc = getCategoryDesc(mdata[i].booktypename);
+                    $("#my_type").append(
+                        '<a href="./reader_book_classification.html?booktypeid=' + mdata[i].booktypeid + '" class="category-link">' +
+                        '<div class="category-card">' +
+                        '<div class="category-icon"><i class="layui-icon ' + icon + '"></i></div>' +
+                        '<div class="category-title">' + mdata[i].booktypename + '</div>' +
+                        '<div class="category-desc">' + desc + '</div>' +
+                        '</div>' +
+                        '</a>'
+                    );
                 }
             }
         });
@@ -281,6 +357,44 @@
         });
 
     });
+
+    // 获取分类图标
+    function getCategoryIcon(typeName) {
+        var icons = {
+            '计算机科学': 'layui-icon-console',
+            '文学': 'layui-icon-read',
+            '历史': 'layui-icon-tabs',
+            '哲学': 'layui-icon-survey',
+            '经济': 'layui-icon-chart',
+            '艺术': 'layui-icon-picture',
+            '教育': 'layui-icon-edit',
+            '自然科学': 'layui-icon-experiment',
+            '社会科学': 'layui-icon-group',
+            '医学': 'layui-icon-heart',
+            '小说': 'layui-icon-read',
+            '外语': 'layui-icon-dialogue',
+            '心理学': 'layui-icon-user',
+            '科幻': 'layui-icon-star'
+        };
+        return icons[typeName] || 'layui-icon-file';
+    }
+
+    // 获取分类描述
+    function getCategoryDesc(typeName) {
+        var descriptions = {
+            '计算机科学': '探索编程、算法、人工智能等前沿技术，掌握数字世界的核心知识。',
+            '文学': '品味经典文学作品，感受文字的魅力与思想的深度。',
+            '历史': '了解人类文明的发展历程，从历史中汲取智慧。',
+            '哲学': '思考生命的意义，探索世界的本质，培养批判性思维。',
+            '经济': '学习经济理论，理解市场规律，掌握投资理财知识。',
+            '艺术': '欣赏艺术之美，培养审美能力，激发创造力。',
+            '教育': '学习教育理论，掌握教学方法，提升教育素养。',
+            '自然科学': '探索自然规律，了解科学原理，培养科学思维。',
+            '社会科学': '研究社会现象，理解人类行为，提升社会认知。',
+            '医学': '学习医学知识，了解健康保健，提升生活质量。'
+        };
+        return descriptions[typeName] || '探索知识的海洋，发现无限可能。';
+    }
 
 </script>
 
