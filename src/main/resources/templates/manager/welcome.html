@@ -183,15 +183,15 @@
         </div>
 
         <div class="quick-actions">
-            <div class="quick-action-btn animate__animated animate__fadeInUp" onclick="location.href='/BookManager/manager/book_info_list.html'">
+            <div class="quick-action-btn animate__animated animate__fadeInUp" onclick="openMenu('book_info_list.html')">
                 <i class="fas fa-book"></i>
                 <span>图书管理</span>
             </div>
-            <div class="quick-action-btn animate__animated animate__fadeInUp" style="animation-delay: 0.2s" onclick="location.href='/BookManager/manager/borrow_list.html'">
+            <div class="quick-action-btn animate__animated animate__fadeInUp" style="animation-delay: 0.2s" onclick="openMenu('borrow_list.html')">
                 <i class="fas fa-exchange-alt"></i>
                 <span>借阅管理</span>
             </div>
-            <div class="quick-action-btn animate__animated animate__fadeInUp" style="animation-delay: 0.4s" onclick="location.href='/BookManager/manager/user_list.html'">
+            <div class="quick-action-btn animate__animated animate__fadeInUp" style="animation-delay: 0.4s" onclick="openMenu('user_list.html')">
                 <i class="fas fa-users"></i>
                 <span>用户管理</span>
             </div>
@@ -258,6 +258,23 @@
             // 初始化图表
             var categoryChart = echarts.init(document.getElementById('categoryChart'));
             var borrowTrendChart = echarts.init(document.getElementById('borrowTrendChart'));
+
+            // 实现与侧边栏一致的导航逻辑
+            window.openMenu = function(url) {
+                // 获取父窗口中的miniTab对象
+                var miniTab = parent.layui.miniTab;
+                if (miniTab) {
+                    // 使用miniTab打开页面
+                    miniTab.openNewTabByIframe({
+                        href: url,
+                        title: url === 'book_info_list.html' ? '图书信息管理' : 
+                               url === 'borrow_list.html' ? '借阅管理' : 
+                               url === 'user_list.html' ? '用户管理' : ''
+                    });
+                } else {
+                    console.error("无法获取父窗口的miniTab对象");
+                }
+            };
 
             // 加载统计数据
             function loadStatistics() {
