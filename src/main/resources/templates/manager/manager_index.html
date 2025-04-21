@@ -145,6 +145,9 @@
             pageAnim: true,             // iframe窗口动画
             maxTabNum: 20,              // 最大的tab打开数量
         };
+        
+        // 清除缓存然后重新渲染
+        layui.data('layuimini', null); // 清除本地存储
         miniAdmin.render(options);
 
         $('.login-out').on("click", function () {

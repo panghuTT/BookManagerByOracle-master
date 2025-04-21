@@ -398,22 +398,8 @@
                 <div class="layui-col-md12">
                     <div class="notice-container">
                         <div class="notice-title">📢 系统公告</div>
-                        <ul class="notice-list">
-                            <li class="notice-item">
-                                <div class="notice-item-title">欢迎使用图书管理系统</div>
-                                <div class="notice-item-content">欢迎使用图书管理系统，祝您使用愉快！</div>
-                                <div class="notice-item-time">发布时间：2024-03-20 10:00:00</div>
-                            </li>
-                            <li class="notice-item">
-                                <div class="notice-item-title">系统维护通知</div>
-                                <div class="notice-item-content">系统将于每周日凌晨2:00-4:00进行例行维护，给您带来的不便敬请谅解。</div>
-                                <div class="notice-item-time">发布时间：2024-03-19 15:30:00</div>
-                            </li>
-                            <li class="notice-item">
-                                <div class="notice-item-title">借阅规则说明</div>
-                                <div class="notice-item-content">每本书借阅期限为30天，逾期将收取滞纳金，请及时归还。</div>
-                                <div class="notice-item-time">发布时间：2024-03-18 09:15:00</div>
-                            </li>
+                        <ul class="notice-list" id="noticeList">
+                            <!-- 公告内容将通过Ajax动态加载 -->
                         </ul>
                     </div>
                 </div>
@@ -428,8 +414,60 @@
             layer = layui.layer,
             $ = layui.$;
 
-        // 轮播图功能
+        // 加载公告数据
+        function loadNotices() {
+            $.ajax({
+                url: '/BookManager/notice/queryActiveNoticesByPage',
+                type: 'get',
+                dataType: 'json',
+                success: function(res) {
+                    if(res.code === 0 && res.data.length > 0) {
+                        var noticeHtml = '';
+                        // 最多显示5条公告
+                        var activeNotices = res.data.slice(0, 5);
+                        
+                        if (activeNotices.length > 0) {
+                            for(var i = 0; i < activeNotices.length; i++) {
+                                var notice = activeNotices[i];
+                                var createTime = new Date(notice.createTime);
+                                var timeStr = createTime.getFullYear() + '-' + 
+                                            padZero(createTime.getMonth() + 1) + '-' + 
+                                            padZero(createTime.getDate()) + ' ' + 
+                                            padZero(createTime.getHours()) + ':' + 
+                                            padZero(createTime.getMinutes()) + ':' + 
+                                            padZero(createTime.getSeconds());
+                                
+                                noticeHtml += '<li class="notice-item">' +
+                                            '<div class="notice-item-title">' + notice.title + '</div>' +
+                                            '<div class="notice-item-content">' + notice.content + '</div>' +
+                                            '<div class="notice-item-time">发布时间：' + timeStr + '</div>' +
+                                            '</li>';
+                            }
+                            
+                            $('#noticeList').html(noticeHtml);
+                        } else {
+                            $('#noticeList').html('<li class="notice-item"><div class="notice-item-content">暂无公告</div></li>');
+                        }
+                    } else {
+                        $('#noticeList').html('<li class="notice-item"><div class="notice-item-content">暂无公告</div></li>');
+                    }
+                },
+                error: function() {
+                    $('#noticeList').html('<li class="notice-item"><div class="notice-item-content">获取公告失败</div></li>');
+                }
+            });
+        }
+        
+        // 数字补零
+        function padZero(num) {
+            return num < 10 ? '0' + num : num;
+        }
+        
+        // 页面加载完成后获取公告
         $(document).ready(function() {
+            loadNotices();
+            
+            // 轮播图功能
             var currentSlide = 0;
             var slides = $('.carousel-item');
             var indicators = $('.carousel-indicator');

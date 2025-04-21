@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangrui.bms.dao.NoticeMapper">
+    
+    <!-- 查询所有公告，按创建时间降序排序 -->
+    <select id="queryAllNotices" resultType="com.wangrui.bms.model.Notice">
+        SELECT 
+            NOTICE_ID as noticeId,
+            TITLE as title,
+            CONTENT as content,
+            CREATE_TIME as createTime,
+            IS_ACTIVE as isActive
+        FROM T_NOTICE
+        ORDER BY CREATE_TIME DESC
+    </select>
+    
+    <!-- 查询所有活跃的公告，按创建时间降序排序 -->
+    <select id="queryActiveNotices" resultType="com.wangrui.bms.model.Notice">
+        SELECT 
+            NOTICE_ID as noticeId,
+            TITLE as title,
+            CONTENT as content,
+            CREATE_TIME as createTime,
+            IS_ACTIVE as isActive
+        FROM T_NOTICE
+        WHERE IS_ACTIVE = 1
+        ORDER BY CREATE_TIME DESC
+    </select>
+    
+    <!-- 根据ID查询公告 -->
+    <select id="queryNoticeById" parameterType="java.lang.Integer" resultType="com.wangrui.bms.model.Notice">
+        SELECT 
+            NOTICE_ID as noticeId,
+            TITLE as title,
+            CONTENT as content,
+            CREATE_TIME as createTime,
+            IS_ACTIVE as isActive
+        FROM T_NOTICE
+        WHERE NOTICE_ID = #{noticeId}
+    </select>
+    
+    <!-- 添加公告 -->
+    <insert id="addNotice" parameterType="com.wangrui.bms.model.Notice">
+        INSERT INTO T_NOTICE (
+            TITLE,
+            CONTENT,
+            CREATE_TIME,
+            IS_ACTIVE
+        ) VALUES (
+            #{title},
+            #{content},
+            #{createTime},
+            #{isActive}
+        )
+    </insert>
+    
+    <!-- 更新公告 -->
+    <update id="updateNotice" parameterType="com.wangrui.bms.model.Notice">
+        UPDATE T_NOTICE
+        SET 
+            TITLE = #{title},
+            CONTENT = #{content},
+            CREATE_TIME = #{createTime},
+            IS_ACTIVE = #{isActive}
+        WHERE NOTICE_ID = #{noticeId}
+    </update>
+    
+    <!-- 删除公告（逻辑删除） -->
+    <update id="deleteNotice" parameterType="java.lang.Integer">
+        UPDATE T_NOTICE
+        SET IS_ACTIVE = 0
+        WHERE NOTICE_ID = #{noticeId}
+    </update>
+    
+</mapper> 

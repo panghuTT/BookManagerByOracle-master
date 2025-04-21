@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑公告</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../layuimini/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="hidden" name="noticeId" value="">
+    <input type="hidden" name="createTime" value="">
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label required">公告标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="required" lay-reqtext="公告标题不能为空" placeholder="请输入公告标题" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label required">公告内容</label>
+        <div class="layui-input-block">
+            <textarea name="content" lay-verify="required" placeholder="请输入公告内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <input type="radio" name="isActive" value="1" title="启用">
+            <input type="radio" name="isActive" value="0" title="禁用">
+        </div>
+    </div>
+    
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="../layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'layedit'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            layedit = layui.layedit,
+            $ = layui.$;
+
+        // 获取URL中的公告ID
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] === variable) {
+                    return pair[1];
+                }
+            }
+            return null;
+        }
+
+        // 获取公告ID
+        var noticeId = getQueryVariable('noticeId');
+        if (!noticeId) {
+            layer.msg('公告ID不存在', {icon: 2});
+            return;
+        }
+
+        // 加载公告数据
+        $.ajax({
+            url: '../notice/queryNoticeById',
+            data: {
+                noticeId: noticeId
+            },
+            type: 'get',
+            dataType: 'json',
+            success: function(res) {
+                if (!res) {
+                    layer.msg('公告不存在', {icon: 2});
+                    return;
+                }
+                
+                // 填充表单数据
+                $('input[name="noticeId"]').val(res.noticeId);
+                $('input[name="title"]').val(res.title);
+                $('textarea[name="content"]').val(res.content);
+                $('input[name="createTime"]').val(res.createTime);
+                
+                // 设置状态单选框
+                $('input[name="isActive"][value="' + res.isActive + '"]').prop('checked', true);
+                
+                form.render();
+            }
+        });
+
+        // 创建富文本编辑器
+        var editIndex = layedit.build('content', {
+            height: 300,
+        });
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var formData = data.field;
+            
+            // 更新公告
+            $.ajax({
+                url: '../notice/updateNotice',
+                data: {
+                    json: JSON.stringify({
+                        noticeId: formData.noticeId,
+                        title: formData.title,
+                        content: formData.content,
+                        createTime: formData.createTime,
+                        isActive: formData.isActive
+                    })
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function(res) {
+                    if(res === 1) {
+                        layer.msg('更新成功', {icon: 1, time: 500}, function() {
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                            parent.layui.table.reload('currentTableId');
+                        });
+                    } else {
+                        layer.msg('更新失败', {icon: 2});
+                    }
+                }
+            });
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html> 

@@ -54,6 +54,12 @@
               "target": "_self"
             },
             {
+              "title": "公告管理",
+              "href": "notice_list.html",
+              "icon": "fa fa-bullhorn",
+              "target": "_self"
+            },
+            {
               "title": "修改密码",
               "href": "password.html",
               "icon": "fa fa-tachometer",

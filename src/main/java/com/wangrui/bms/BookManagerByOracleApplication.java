@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan(value = "com.wangrui.bms.mapper")
+@MapperScan({"com.wangrui.bms.mapper", "com.wangrui.bms.dao"})
 public class BookManagerByOracleApplication {
 
     public static void main(String[] args) {
