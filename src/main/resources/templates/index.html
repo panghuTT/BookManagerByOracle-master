@@ -27,10 +27,13 @@
             background-size: cover;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
             position: relative;
+            padding-top: 80px; /* 为页头留出空间 */
+            padding-bottom: 300px; /* 为页脚留出空间 */
         }
         body::before {
             content: '';
@@ -51,7 +54,8 @@
             overflow: hidden;
             display: flex;
             position: relative;
-            z-index: 1;
+            z-index: 20; /* 确保登录框在页脚之上 */
+            margin-bottom: 30px; /* 与页脚保持距离 */
         }
         .login-form {
             flex: 1;
@@ -139,16 +143,23 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            color: rgba(255, 255, 255, 0.7);
+            background: #4BAC4F;
+            color: #fff;
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
             transition: all 0.3s;
             z-index: 100;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(75, 172, 79, 0.3);
         }
         .admin-link:hover {
+            background: #3d8c40;
             color: #fff;
-            text-decoration: underline;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(75, 172, 79, 0.4);
         }
         #admin-login-modal {
             display: none;
@@ -162,8 +173,12 @@
             display: none;
         }
         @media (max-width: 768px) {
+            body {
+                padding-bottom: 500px; /* 移动端为页脚留出更多空间 */
+            }
             .login-container {
                 flex-direction: column;
+                margin-bottom: 20px;
             }
             .login-image {
                 display: none;
@@ -171,10 +186,366 @@
             .login-form {
                 padding: 30px;
             }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .header-logo h1 {
+                font-size: 20px;
+            }
+            
+            .header-logo img {
+                height: 35px;
+            }
+        }
+        
+        /* 修改页脚样式 */
+        .footer-container {
+            position: absolute; /* 改为absolute定位 */
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 0;
+            color: #fff;
+            z-index: 10;
+            margin-top: 50px; /* 与上方内容保持距离 */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        .footer-section h3 {
+            color: #4BAC4F;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .footer-section p {
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-section ul li a {
+            color: #666666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #4BAC4F;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            color: #666666;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #4BAC4F;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: #666666;
+            font-size: 14px;
+        }
+        
+        /* 添加页头样式 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-logo img {
+            height: 45px;
+            margin-right: 15px;
+            filter: drop-shadow(1px 1px 2px rgba(255, 255, 255, 0.5)); /* 为logo添加阴影效果 */
+        }
+        
+        .header-logo h1 {
+            font-size: 24px;
+            color: #4BAC4F;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        /* 侧边栏组件样式 */
+        .side-widgets {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            z-index: 100;
+        }
+        
+        .side-widgets.left {
+            left: 30px;
+        }
+        
+        .side-widgets.right {
+            right: 30px;
+        }
+        
+        .widget {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .widget-title {
+            color: #4BAC4F;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .widget-title i {
+            margin-right: 8px;
+        }
+        
+        .widget-content {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 日期时间组件 */
+        .datetime {
+            text-align: center;
+        }
+        
+        .time {
+            font-size: 32px;
+            font-weight: 300;
+            color: #4BAC4F;
+            margin-bottom: 5px;
+        }
+        
+        .date {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 天气组件 */
+        .weather {
+            text-align: center;
+        }
+        
+        .weather-icon {
+            font-size: 36px;
+            color: #4BAC4F;
+            margin-bottom: 10px;
+        }
+        
+        /* 公告组件 */
+        .notice-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .notice-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 快捷链接 */
+        .quick-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .quick-links li {
+            margin-bottom: 10px;
+        }
+        
+        .quick-links a {
+            color: #666;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .quick-links a:hover {
+            color: #4BAC4F;
+            transform: translateX(5px);
+        }
+        
+        .quick-links i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* 统计信息 */
+        .stats-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .stats-label {
+            color: #666;
+        }
+        
+        .stats-value {
+            color: #4BAC4F;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 1400px) {
+            .side-widgets {
+                display: none;
+            }
         }
     </style>
+    <!-- 导入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+    <!-- 添加页头 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logo">
+                <img src="layuimini/images/jlu-logo.png" alt="JLU Logo">
+                <h1>图书管理系统</h1>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 左侧组件 -->
+    <div class="side-widgets left">
+        <div class="widget">
+            <div class="widget-title">
+                <i class="far fa-clock"></i>
+                当前时间
+            </div>
+            <div class="widget-content datetime">
+                <div class="time" id="current-time">00:00:00</div>
+                <div class="date" id="current-date">2024年03月21日</div>
+            </div>
+        </div>
+        
+        <div class="widget">
+            <div class="widget-title">
+                <i class="fas fa-bullhorn"></i>
+                最新公告
+            </div>
+            <div class="widget-content">
+                <ul class="notice-list">
+                    <li class="notice-item">系统维护通知：本周日凌晨2-4点进行系统维护</li>
+                    <li class="notice-item">新增图书100册，欢迎借阅</li>
+                    <li class="notice-item">寒假期间开放时间调整通知</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 右侧组件 -->
+    <div class="side-widgets right">
+        <div class="widget">
+            <div class="widget-title">
+                <i class="fas fa-chart-bar"></i>
+                借阅统计
+            </div>
+            <div class="widget-content">
+                <div class="stats-item">
+                    <span class="stats-label">今日借阅</span>
+                    <span class="stats-value">126</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">总藏书量</span>
+                    <span class="stats-value">25,630</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">注册读者</span>
+                    <span class="stats-value">3,842</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget">
+            <div class="widget-title">
+                <i class="fas fa-link"></i>
+                快捷入口
+            </div>
+            <div class="widget-content">
+                <ul class="quick-links">
+                    <li><a href="#"><i class="fas fa-book"></i>新书推荐</a></li>
+                    <li><a href="#"><i class="fas fa-star"></i>热门借阅</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i>借阅指南</a></li>
+                    <li><a href="#"><i class="fas fa-info-circle"></i>关于我们</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
     <div class="login-container">
         <div class="login-form">
             <div class="admin-header">
@@ -210,6 +581,7 @@
                 <div class="layui-input-block">
                     <input type="text" name="username" value="root" disabled class="layui-input" style="background-color: #f9f9f9;">
                 </div>
+
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">密码</label>
@@ -227,9 +599,45 @@
         </form>
     </div>
     
-    <div class="copyright">
-        <p>© 2024 图书管理系统. All rights reserved</p>
+    <!-- 新的页脚 -->
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于我们</h3>
+                <p>图书管理系统是一个现代化的图书管理平台，致力于为读者提供便捷的图书借阅服务。</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul>
+                    <li><a href="./index.html">首页</a></li>
+                    <li><a href="./reader/reader_book_list.html">图书列表</a></li>
+                    <li><a href="./reader/reader_book_classification.html">图书分类</a></li>
+                    <li><a href="./admin/admin_index.html">管理员入口</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 吉林省长春市</p>
+                <p><i class="fas fa-phone"></i> 123-456-7890</p>
+                <p><i class="fas fa-envelope"></i> support@library.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>开放时间</h3>
+                <p>周一至周五: 8:00 - 22:00</p>
+                <p>周六至周日: 9:00 - 21:00</p>
+                <p>节假日: 10:00 - 20:00</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 图书管理系统. 保留所有权利.</p>
+        </div>
     </div>
+
 <script src="./layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form', 'layer'], function () {
@@ -333,6 +741,35 @@
             return false;
         });
     });
+
+    // 更新时间的函数
+    function updateDateTime() {
+        const now = new Date();
+        
+        // 更新时间
+        const timeString = now.toLocaleTimeString('zh-CN', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        document.getElementById('current-time').textContent = timeString;
+        
+        // 更新日期
+        const dateString = now.toLocaleDateString('zh-CN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long'
+        });
+        document.getElementById('current-date').textContent = dateString;
+    }
+    
+    // 初始更新
+    updateDateTime();
+    
+    // 每秒更新一次
+    setInterval(updateDateTime, 1000);
 </script>
 </body>
 </html>
