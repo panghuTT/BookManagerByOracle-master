@@ -12,31 +12,58 @@
             float: right;
         }
         .my-main-body{
-            color: #898989; font-size: 16px; margin: 30px
+            color: #898989; font-size: 16px; margin: 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
         }
         .my-book-item{
-            padding: 10px
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            transition: all 0.3s;
+        }
+        .my-book-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,.2);
         }
         .my-book-name{
             font-size: 24px; color: black;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
         .my-button{
-            margin-top: 5px;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        .my-button:hover {
+            transform: scale(1.05);
         }
         .my-img-size{
             width: 150px; height: 200px;
+            border-radius: 4px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            transition: all 0.3s;
+        }
+        .my-img-size:hover {
+            transform: scale(1.05);
         }
         .my-book-isBorrowed{
-            color: red;
+            color: #FF5722;
+            font-weight: bold;
         }
         .my-book-isNotBorrowed{
-            color: green;
+            color: #1E9FFF;
+            font-weight: bold;
         }
         /*单行文本的溢出显示省略号*/
         .pl{
             overflow:hidden;
             text-overflow:ellipsis;
-            white-space: nowrap;/*加宽度width属来兼容部分浏览*/
+            white-space: nowrap;
         }
         /*多行文本溢出显示省略号*/
         .p2{
@@ -46,17 +73,139 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden;
-            /*-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 为了实现该效果，它需要组合其他的WebKit属性。常见结合属性：
-            display: -webkit-box; 必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。
-            -webkit-box-orient 必须结合的属性，设置或检索伸缩盒对象的子元素的排列方式 。*/
+        }
+        /*分类导航样式*/
+        .category-nav {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 20px;
+            margin-bottom: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            gap: 15px;
+        }
+        .category-nav::-webkit-scrollbar {
+            height: 6px;
+        }
+        .category-nav::-webkit-scrollbar-thumb {
+            background: #009688;
+            border-radius: 3px;
+        }
+        .category-item {
+            padding: 12px 25px;
+            background: #f8f8f8;
+            border-radius: 30px;
+            color: #333;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        }
+        .category-item i {
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        .category-item:hover {
+            background: #009688;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,150,136,.3);
+        }
+        .category-item:hover i {
+            transform: scale(1.2);
+        }
+        .category-item.active {
+            background: #009688;
+            color: #fff;
+            border-color: #009688;
+            box-shadow: 0 5px 15px rgba(0,150,136,.3);
+        }
+        .category-item.active i {
+            transform: scale(1.2);
+        }
+        /*分页样式*/
+        #my_page {
+            margin-top: 30px;
+            text-align: center;
+        }
+        /*静态组件样式*/
+        .static-components {
+            margin-bottom: 30px;
+        }
+        .feature-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,.2);
+        }
+        .feature-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-content {
+            color: #666;
+            line-height: 1.6;
+        }
+        .notice-board {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            margin-bottom: 20px;
+        }
+        .notice-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .notice-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .notice-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+        .notice-item-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .notice-item-time {
+            font-size: 12px;
+            color: #999;
         }
     </style>
 
     <!-- 导入layui css -->
     <link rel="stylesheet" href="../layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
-
     <!-- 导入layui js -->
     <script src="../layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+    <!-- 导入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 <div class="layui-container">
@@ -94,25 +243,36 @@
     </div>
 
     <div class="my-main-body">
-
         <fieldset class="layui-elem-field layui-field-title">
             <legend>图书分类（点击对应分类查看书籍）</legend>
         </fieldset>
 
-        <div class="layui-row" style="margin-bottom: 20px">
-            <span class="layui-breadcrumb" id="my_type">
-<!--                <a href="./reader_book_classification.html?booktypeid=1">计算机科学</a>-->
-            </span>
+        <!-- 静态组件区域 -->
+        <div class="static-components">
+            <!-- 功能卡片 -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-lightbulb"></i> 借阅指南
+                </div>
+                <div class="feature-content">
+                    <p>1. 每本书借阅期限为30天</p>
+                    <p>2. 每人最多可同时借阅5本书</p>
+                    <p>3. 逾期归还将收取滞纳金</p>
+                    <p>4. 请爱护图书，按时归还</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-nav" id="my_type">
+            <!-- 动态添加分类 -->
         </div>
 
         <div class="layui-row" id="my_content">
-            <!--动态添加内容-->
+            <!-- 动态添加内容 -->
         </div>
 
         <div id="my_page"></div>
-
     </div>
-
 </div>
 
 <script>
@@ -174,11 +334,41 @@
                 console.log(mdata);
                 $("#my_type").html("");
                 for(var i = 0; i < mdata.length; i++) {
-                    $("#my_type").append("<a href=\"./reader_book_classification.html?booktypeid=" + mdata[i].booktypeid + "\">" + mdata[i].booktypename + "</a>")
-                    if(i !== mdata.length - 1)$("#my_type").append("<span> | </span>");
+                    var activeClass = '';
+                    if (getQueryVariable('booktypeid') === mdata[i].booktypeid) {
+                        activeClass = 'active';
+                    }
+                    var iconClass = getIconClass(mdata[i].booktypename);
+                    $("#my_type").append("<a class=\"category-item " + activeClass + "\" href=\"./reader_book_classification.html?booktypeid=" + mdata[i].booktypeid + "\"><i class=\"" + iconClass + "\"></i>" + mdata[i].booktypename + "</a>");
                 }
             }
         });
+
+        function getIconClass(bookTypeName) {
+            var iconMap = {
+                '计算机科学': 'fas fa-laptop-code',
+                '历史': 'fas fa-landmark',
+                '文学': 'fas fa-book-open',
+                '艺术': 'fas fa-palette',
+                '科学': 'fas fa-flask',
+                '哲学': 'fas fa-brain',
+                '经济': 'fas fa-chart-line',
+                '教育': 'fas fa-graduation-cap',
+                '医学': 'fas fa-heartbeat',
+                '法律': 'fas fa-gavel',
+                '心理学': 'fas fa-brain',
+                '社会学': 'fas fa-users',
+                '政治': 'fas fa-university',
+                '宗教': 'fas fa-church',
+                '体育': 'fas fa-running',
+                '旅游': 'fas fa-plane',
+                '美食': 'fas fa-utensils',
+                '建筑': 'fas fa-building',
+                '音乐': 'fas fa-music',
+                '电影': 'fas fa-film'
+            };
+            return iconMap[bookTypeName] || 'fas fa-book';
+        }
 
         var paramBookTypeid = decodeURI(getQueryVariable('booktypeid'));
 
@@ -194,15 +384,12 @@
                 success: function (bookCount) {
                     //执行一个laypage实例
                     laypage.render({
-                        elem: 'my_page', //注意，这里的 test1 是 ID，不用加 # 号
-                        count: bookCount, //数据总数，从服务端得到
+                        elem: 'my_page',
+                        count: bookCount,
                         limit: 6,
                         limits: [4, 6, 8, 10, 12, 14, 16, 18, 20],
                         layout: ['prev', 'page', 'next', 'limit', 'skip', 'count'],
                         jump: function(obj, first){
-                            //obj包含了当前分页的所有参数，比如：
-                            console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-                            console.log(obj.limit); //得到每页显示的条数
                             $.ajax({
                                 url: '../bookInfo/reader/queryBookInfosByPageByType',
                                 data: {
@@ -279,10 +466,7 @@
                 // 取消回调
             });
         });
-
     });
-
 </script>
-
 </body>
 </html>
