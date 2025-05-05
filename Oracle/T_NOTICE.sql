@@ -1,7 +1,7 @@
 /*
- Navicat Oracle Dump SQL
+ Navicat Premium Dump SQL
 
- Source Server         : wangrui
+ Source Server         : admin1
  Source Server Type    : Oracle
  Source Server Version : 120200 (Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production)
  Source Host           : 39.106.9.202:1521
@@ -11,7 +11,7 @@
  Target Server Version : 120200 (Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production)
  File Encoding         : 65001
 
- Date: 22/04/2025 01:03:39
+ Date: 05/05/2025 20:43:30
 */
 
 
@@ -45,11 +45,9 @@ DISABLE ROW MOVEMENT
 -- ----------------------------
 -- Records of T_NOTICE
 -- ----------------------------
-INSERT INTO "ADMIN1"."T_NOTICE" ("NOTICE_ID", "TITLE", "CONTENT", "CREATE_TIME", "IS_ACTIVE") VALUES ('25', '欢迎使用图书管理系统', '欢迎使用图书管理系统，祝您使用愉快！', TO_DATE('2025-04-20 22:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '1');
-INSERT INTO "ADMIN1"."T_NOTICE" ("NOTICE_ID", "TITLE", "CONTENT", "CREATE_TIME", "IS_ACTIVE") VALUES ('26', '系统维护通知', '系统将于每周日凌晨2:00-4:00进行例行维护，给您带来的不便敬请谅解。', TO_DATE('2025-04-20 22:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '1');
-INSERT INTO "ADMIN1"."T_NOTICE" ("NOTICE_ID", "TITLE", "CONTENT", "CREATE_TIME", "IS_ACTIVE") VALUES ('27', '借阅规则说明', '每本书借阅期限为30天，逾期将收取滞纳金，请及时归还。', TO_DATE('2025-04-20 22:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '1');
-COMMIT;
-COMMIT;
+INSERT INTO "ADMIN1"."T_NOTICE" VALUES ('25', '欢迎使用图书管理系统', '欢迎使用图书管理系统，祝您使用愉快！', TO_DATE('2025-04-20 22:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '0');
+INSERT INTO "ADMIN1"."T_NOTICE" VALUES ('26', '系统维护通知', '系统将于每周日凌晨2:00-4:00进行例行维护，给您带来的不便敬请谅解。', TO_DATE('2025-04-20 22:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '1');
+INSERT INTO "ADMIN1"."T_NOTICE" VALUES ('27', '借阅规则说明', '每本书借阅期限为30天，逾期将收取滞纳金，请及时归还。', TO_DATE('2025-04-20 22:32:34', 'SYYYY-MM-DD HH24:MI:SS'), '1');
 
 -- ----------------------------
 -- Primary Key structure for table T_NOTICE

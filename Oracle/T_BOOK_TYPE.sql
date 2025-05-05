@@ -1,7 +1,7 @@
 /*
- Navicat Oracle Dump SQL
+ Navicat Premium Dump SQL
 
- Source Server         : wangrui
+ Source Server         : admin1
  Source Server Type    : Oracle
  Source Server Version : 120200 (Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production)
  Source Host           : 39.106.9.202:1521
@@ -11,7 +11,7 @@
  Target Server Version : 120200 (Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production)
  File Encoding         : 65001
 
- Date: 18/04/2025 17:47:30
+ Date: 05/05/2025 20:43:11
 */
 
 
@@ -43,14 +43,14 @@ DISABLE ROW MOVEMENT
 -- ----------------------------
 -- Records of T_BOOK_TYPE
 -- ----------------------------
-INSERT INTO "ADMIN1"."T_BOOK_TYPE" ("BOOKTYPEID", "BOOKTYPENAME", "BOOKTYPEDESC") VALUES ('1', '计算机科学', '计算机相关');
-INSERT INTO "ADMIN1"."T_BOOK_TYPE" ("BOOKTYPEID", "BOOKTYPENAME", "BOOKTYPEDESC") VALUES ('2', '历史', '历史相关');
-INSERT INTO "ADMIN1"."T_BOOK_TYPE" ("BOOKTYPEID", "BOOKTYPENAME", "BOOKTYPEDESC") VALUES ('3', '文学', '文学相关');
-INSERT INTO "ADMIN1"."T_BOOK_TYPE" ("BOOKTYPEID", "BOOKTYPENAME", "BOOKTYPEDESC") VALUES ('4', '科幻', '科幻相关');
-INSERT INTO "ADMIN1"."T_BOOK_TYPE" ("BOOKTYPEID", "BOOKTYPENAME", "BOOKTYPEDESC") VALUES ('6', '小说', '小说相关');
-INSERT INTO "ADMIN1"."T_BOOK_TYPE" ("BOOKTYPEID", "BOOKTYPENAME", "BOOKTYPEDESC") VALUES ('7', '外语', '外语相关');
-COMMIT;
-COMMIT;
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('5', '商业', '商业相关');
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('8', '心理学', '心理学相关');
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('1', '计算机科学', '计算机相关');
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('2', '历史', '历史相关');
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('3', '文学', '文学相关');
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('4', '科幻', '科幻相关');
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('6', '小说', '小说相关');
+INSERT INTO "ADMIN1"."T_BOOK_TYPE" VALUES ('7', '外语', '外语相关');
 
 -- ----------------------------
 -- Primary Key structure for table T_BOOK_TYPE
@@ -71,8 +71,9 @@ ALTER TABLE "ADMIN1"."T_BOOK_TYPE" ADD CONSTRAINT "SYS_C0011589" CHECK ("BOOKTYP
 -- Triggers structure for table T_BOOK_TYPE
 -- ----------------------------
 CREATE TRIGGER "ADMIN1"."t_book_type_trig" BEFORE INSERT ON "ADMIN1"."T_BOOK_TYPE" REFERENCING OLD AS "OLD" NEW AS "NEW" FOR EACH ROW 
-declare
-begin
-    select seq_t_book_type.nextval into :new.booktypeid from dual;
-end dept_trig;
+BEGIN
+  IF :new.booktypeid IS NULL THEN
+    SELECT "ADMIN1"."seq_t_book_type".nextval INTO :new.booktypeid FROM dual;
+  END IF;
+END;
 /

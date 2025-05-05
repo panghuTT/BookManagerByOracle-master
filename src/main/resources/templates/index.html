@@ -562,8 +562,8 @@
                 </div>
                 <input type="hidden" name="authority" value="reader">
                 <div class="btn-group">
-                    <button class="layui-btn" lay-submit="" lay-filter="login">确认登录</button>
-                    <button class="layui-btn" id="btn_register" type="button">注册账号</button>
+                <button class="layui-btn" lay-submit="" lay-filter="login">确认登录</button>
+                <button class="layui-btn" id="btn_register" type="button">注册账号</button>
                 </div>
             </form>
         </div>
@@ -635,8 +635,8 @@
         </div>
         <div class="copyright">
             <p>&copy; 2024 图书管理系统. 保留所有权利.</p>
-        </div>
     </div>
+</div>
 
 <script src="./layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
@@ -732,7 +732,7 @@
                             break;
                         case 1: //登录成功
                             layer.msg("管理员登录成功",{time:1000},function () {
-                                location.href="manager/manager_index.html";
+                                    location.href="manager/manager_index.html";
                             });
                             break;
                     }

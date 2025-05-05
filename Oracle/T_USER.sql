@@ -1,7 +1,7 @@
 /*
- Navicat Oracle Dump SQL
+ Navicat Premium Dump SQL
 
- Source Server         : wangrui
+ Source Server         : admin1
  Source Server Type    : Oracle
  Source Server Version : 120200 (Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production)
  Source Host           : 39.106.9.202:1521
@@ -11,7 +11,7 @@
  Target Server Version : 120200 (Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production)
  File Encoding         : 65001
 
- Date: 18/04/2025 18:01:52
+ Date: 05/05/2025 20:43:35
 */
 
 
@@ -44,17 +44,24 @@ DISABLE ROW MOVEMENT
 -- ----------------------------
 -- Records of T_USER
 -- ----------------------------
-INSERT INTO "ADMIN1"."T_USER" ("USERID", "USERNAME", "USERPASSWORD", "ISADMIN") VALUES ('1', 'wangrui', '123456', '0');
-INSERT INTO "ADMIN1"."T_USER" ("USERID", "USERNAME", "USERPASSWORD", "ISADMIN") VALUES ('2', 'lizhangyue', '123456', '0');
-INSERT INTO "ADMIN1"."T_USER" ("USERID", "USERNAME", "USERPASSWORD", "ISADMIN") VALUES ('3', 'liuxiangxiang', '123456', '0');
-INSERT INTO "ADMIN1"."T_USER" ("USERID", "USERNAME", "USERPASSWORD", "ISADMIN") VALUES ('0', 'root', '123456', '1');
-COMMIT;
-COMMIT;
+INSERT INTO "ADMIN1"."T_USER" VALUES ('1', 'wangrui', '123456', '0');
+INSERT INTO "ADMIN1"."T_USER" VALUES ('2', 'lizhangyue', '123456', '0');
+INSERT INTO "ADMIN1"."T_USER" VALUES ('3', 'liuxiangxiang', '123456', '0');
+INSERT INTO "ADMIN1"."T_USER" VALUES ('4', 'panghu', '123456', '0');
+INSERT INTO "ADMIN1"."T_USER" VALUES ('104', 'xiao', '123456', '0');
+INSERT INTO "ADMIN1"."T_USER" VALUES ('5', 'jiaojiaozhu', '123456', '0');
+INSERT INTO "ADMIN1"."T_USER" VALUES ('54', 'pangmao', '123456', '0');
+INSERT INTO "ADMIN1"."T_USER" VALUES ('0', 'root', '123456', '1');
 
 -- ----------------------------
 -- Primary Key structure for table T_USER
 -- ----------------------------
 ALTER TABLE "ADMIN1"."T_USER" ADD CONSTRAINT "SYS_C0011108" PRIMARY KEY ("USERID");
+
+-- ----------------------------
+-- Uniques structure for table T_USER
+-- ----------------------------
+ALTER TABLE "ADMIN1"."T_USER" ADD CONSTRAINT "uq_username" UNIQUE ("USERNAME") NOT DEFERRABLE INITIALLY IMMEDIATE NORELY VALIDATE;
 
 -- ----------------------------
 -- Checks structure for table T_USER
